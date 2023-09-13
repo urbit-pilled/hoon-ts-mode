@@ -29,20 +29,21 @@
    :feature 'lusNames
    :language 'hoon
    '((luslusTall (name) @font-lock-function-name-face)
-    (lusbucTall (name) @font-lock-function-name-face))
-   
+     (lusbucTall (name) @font-lock-function-name-face))
+
    :feature 'constants
    :language 'hoon
    '((mold) @font-lock-constant-face
-    (lark) @font-lock-constant-face
-    (date) @font-lock-constant-face
-    (term) @font-lock-constant-face
-    (number) @font-lock-constant-face))
+     (lark) @font-lock-constant-face
+     (date) @font-lock-constant-face
+     (term) @font-lock-constant-face
+     (number) @font-lock-constant-face))
 
   "Tree-sitter font-lock settings.")
 
+
 ;;;###autoload
-(define-derived-mode hoon-ts-mode fundamental-mode "Hoon ts mode"
+(define-derived-mode hoon-ts-mode hoon-mode "Hoon ts mode"
   "Treesitter mode for hoon files"
 
   (when (treesit-ready-p 'hoon)
@@ -56,12 +57,16 @@
     (setq-local treesit-font-lock-settings hoon--treesit-font-lock-setting)
     ;; - treesit-simple-indent-rules
     ;; - treesit-defun-type-regexp
-    ;; - treesit-defun-name-function
-    ;; - treesit-simple-imenu-settings
+    (setq treesit-simple-imenu-settings
+          `(("Arms" "\\`luslusTall\\'" nil hoon--treesit-defun-name)
+            ("Molds" "\\`lusbucTall\\'" nil hoon--treesit-defun-name)))   ;; - treesit-simple-imenu-settings
     (treesit-major-mode-setup)))
 
-;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.hoon\\'" . hoon-ts-mode))
+(defun hoon--treesit-defun-name (node)
+  (pcase (treesit-node-type node)
+    ((or "luslusTall" "lusbucTall" "wrapFace")
+        (treesit-node-text (treesit-search-forward node "name")))))
+(add-to-list 'auto-mode-alist '("\\.hoon$" . hoon-ts-mode))
 
 (defvar hoon-ts-mode-default-grammar-sources
   '((hoon . ("https://github.com/urbit-pilled/tree-sitter-hoon.git"))))
@@ -90,4 +95,3 @@
 (provide 'hoon-ts-mode)
 
 ;;; hoon-ts-mode.el ends here
-
