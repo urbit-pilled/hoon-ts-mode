@@ -33,6 +33,7 @@
 
    :feature 'zapzap
    :language 'hoon
+   :override t
    '((zapzap (_)) @font-lock-warning-face)
 
    :feature 'name
@@ -69,7 +70,7 @@
     ;; set up treesit
     (setq-local treesit-font-lock-feature-list
                 '((comment string aura)
-                  (rune zapzap)
+                  (zapzap rune)
                   (constants lusNames shadow)
                   (gateCal typeCast)))
 
