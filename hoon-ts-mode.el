@@ -17,7 +17,7 @@
 
    :feature 'aura
    :language 'hoon
-   '((aura) @font-lock-builtin-face)
+   '((aura) @font-lock-type-face)
 
    :feature 'shadow
    :language 'hoon
@@ -25,7 +25,7 @@
 
    :feature 'rune
    :language 'hoon
-   '((rune) @font-lock-variable-name-face)
+   '((rune) @font-lock-builtin-face)
 
    :feature 'typeCast
    :language 'hoon
@@ -51,7 +51,7 @@
    :feature 'constants
    :language 'hoon
    '((mold) @font-lock-keyword-face
-     (lark) @font-lock-doc-markup-face
+     (lark) @font-lock-misc-punctuation-face
      (date) @font-lock-keyword-face
      (number) @font-lock-keyword-face
      (boolean) @font-lock-keyword-face
@@ -69,9 +69,10 @@
     ;; set up treesit
     (setq-local treesit-font-lock-feature-list
                 '((comment string aura)
-                  (rune)
+                  (rune zapzap)
                   (constants lusNames shadow)
-                  ))
+                  (gateCal typeCast)))
+
     (setq-local treesit-font-lock-settings hoon--treesit-font-lock-setting)
     ;; - treesit-simple-indent-rules
     ;; - treesit-defun-type-regexp
@@ -83,7 +84,7 @@
 (defun hoon--treesit-defun-name (node)
   (pcase (treesit-node-type node)
     ((or "luslusTall" "lusbucTall" "wrapFace")
-        (treesit-node-text (treesit-search-forward node "name")))))
+     (treesit-node-text (treesit-search-forward node "name")))))
 (add-to-list 'auto-mode-alist '("\\.hoon$" . hoon-ts-mode))
 
 (defvar hoon-ts-mode-default-grammar-sources
