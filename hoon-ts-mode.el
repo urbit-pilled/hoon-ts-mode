@@ -5,6 +5,7 @@
 (require 'treesit)
 
 (defvar hoon--treesit-font-lock-setting
+
   (treesit-font-lock-rules
    :feature 'comment
    :language 'hoon
@@ -16,7 +17,7 @@
 
    :feature 'aura
    :language 'hoon
-   '((aura) @font-lock-type-face)
+   '((aura) @font-lock-builtin-face)
 
    :feature 'shadow
    :language 'hoon
@@ -24,20 +25,37 @@
 
    :feature 'rune
    :language 'hoon
-   '((rune) @font-lock-constant-face)
+   '((rune) @font-lock-variable-name-face)
+
+   :feature 'typeCast
+   :language 'hoon
+   '((typeCast (_)) @font-lock-type-face)
+
+   :feature 'zapzap
+   :language 'hoon
+   '((zapzap (_)) @font-lock-warning-face)
+
+   :feature 'name
+   :language 'hoon
+   '((name) @font-lock-variable-name-face)
 
    :feature 'lusNames
    :language 'hoon
    '((luslusTall (name) @font-lock-function-name-face)
      (lusbucTall (name) @font-lock-function-name-face))
 
+   :feature 'gateCall
+   :language 'hoon
+   '((gateCall) @font-lock-constant-call-face)
+
    :feature 'constants
    :language 'hoon
-   '((mold) @font-lock-constant-face
-     (lark) @font-lock-constant-face
-     (date) @font-lock-constant-face
-     (term) @font-lock-constant-face
-     (number) @font-lock-constant-face))
+   '((mold) @font-lock-keyword-face
+     (lark) @font-lock-doc-markup-face
+     (date) @font-lock-keyword-face
+     (number) @font-lock-keyword-face
+     (boolean) @font-lock-keyword-face
+     (term) @font-lock-keyword-face))
 
   "Tree-sitter font-lock settings.")
 
